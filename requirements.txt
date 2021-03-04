@@ -1,0 +1,10 @@
+Django==1.11
+django-crispy-forms==1.7.2
+docutils==0.14
+jmespath==0.9.3
+Pillow
+python-dateutil==2.8.0
+pytz==2018.9
+six==1.12.0
+urllib3==1.24.1
+whitenoise

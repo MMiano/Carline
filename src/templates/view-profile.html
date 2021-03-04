@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+		
+<div class="container">
+	
+	{% include "messages_display.html" %}
+
+<div class="row" style="padding-top:30px;padding-bottom:70px;">
+    <div class="col-sm-3 col-sm-offset-1">
+        <center>
+            <div class="profile-pic-icon">
+                <img src="{{request.user.userprofile.profile_pic.url}}" alt="" class="img-responsive" 
+                style="border-radius:50px;width:100px;height:100px;margin-top:3px;">
+            </div>
+            <h3>{{first_name}} {{last_name}}</h3>
+        </center>
+        <hr style="border-width:2px;">
+        <h4 class="footer-topic">Profile Information</h4>
+        <div class="row feint-text">
+        	<div class="col-sm-5" style="padding-right:0;"><h5>Username:</h5></div>
+        	<div class="col-sm-3"><h5> {{username}}</h5></div>
+        </div>
+
+        <div class="row feint-text">
+        	<div class="col-sm-5" style="padding-right:0;"><h5>Email:</h5></div>
+        	<div class="col-sm-3"><h5> {{email}}</h5></div>
+        </div>
+
+        <div class="row feint-text">
+        	<div class="col-sm-5" style="padding-right:0;"><h5>First Name:</h5></div>
+        	<div class="col-sm-3"><h5> {{first_name}}</h5></div>
+        </div>
+
+        <div class="row feint-text">
+        	<div class="col-sm-5" style="padding-right:0;"><h5>Last Name:</h5></div>
+        	<div class="col-sm-3"><h5> {{last_name}}</h5></div>
+        </div>
+         
+
+    </div>
+    <div class="col-sm-7 col-sm-offset-1">
+        <div class="row">
+            <h3 class="footer-topic" style="color:black !important;">DASHBOARD</h3>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="padding-top:15px;">
+                <h3 style="margin-bottom: 40px;font-weight:100;" class="footer-topic">Tools</h3>
+                <h4 class="footer-topic">Create</h4>
+                <a href="{% url 'mainapp:add-product' %}" class="row-link">
+                	<div class="row row-highlight">
+                	<div class="col-xs-8"><i><h5 class="feint-text">Add new product</h5></i></div>
+                <div class="col-xs-1 icon-padding"><i class="fa fa-plus-circle"></i></div>
+                </div>
+                </a>
+				<br>
+                <h4 class="footer-topic">Edit</h4>
+                <a href="{% url 'mainapp:owned-parts' %}" class="row-link">
+                <div class="row">
+                	<div class="col-xs-8"><i><h5 class="feint-text">Edit or delete existing product</h5></i></div>
+                <div class="col-xs-1 icon-padding"><i class="fa fa-edit"></i></div>
+                </div>
+                </a>
+
+                <a href="{{request.user.userprofile.get_absolute_url_edit}}" class="row-link">
+                <div class="row">
+                	<div class="col-xs-8"><i><h5 class="feint-text">Edit profile</h5></i></div>
+                <div class="col-xs-1 icon-padding"><i class="fa fa-user"></i></div>
+                </div>
+                </a>
+                
+                
+            </div>
+            <div class="col-sm-6" style="padding-top:15px;">
+                <h3 style="margin-bottom: 53px;font-weight:100;" class="footer-topic">Inventory</h3>
+                <h4 class="footer-topic">All Items ({{owned_count}})</h4>
+
+
+                <h4 class="footer-topic">Active orders ({{unavailable_count}})</h4>
+
+                <h4 class="footer-topic">Requested items ({{requested_count}})</h4>
+
+            </div>
+        </div>
+    </div>
+</div>
+		
+
+			<div class="row">
+				<div class="col-sm-6">
+				<h3 class="footer-topic" style="color:black !important;">OWNED SPARE PARTS</h3>
+				<hr>
+					<table class="table">
+					<thead>
+						<tr>
+							<td>
+								Title
+							</td>
+
+							
+							<td>
+								Status
+							</td>
+						</tr>
+						
+					</thead>
+					<tbody>
+					{% for o in owned %}
+						<tr>
+							<td>{{o.title}}</td>
+							
+							<td>
+							{% if o.is_available %} 
+							Available 
+							{% else %} 
+							Requested 
+							{% endif %} 
+							</td>
+						</tr>
+					{% endfor %}
+						
+					</tbody>
+						
+					</table>
+					
+					<a href="{% url 'mainapp:owned-parts' %}" class="btn btn-primary">View All</a>
+
+				</div>
+				<div class="col-sm-6">
+				<h3 class="footer-topic" style="color:black !important;">REQUESTED SPARE PARTS</h3>
+				<hr>
+				<table class="table">
+					<thead>
+						<tr>
+							<td>
+								Owner
+							</td>
+
+							<td>
+								Product
+							</td>
+
+						</tr>
+						
+					</thead>
+					<tbody>
+					{% for r in requested %}
+						<tr>
+							<td>{{r.product.owner.email}}</td>
+							<td>{{r.product.title}}</td>
+						</tr>
+					{% endfor %}
+						
+					</tbody>
+						
+					</table>
+					<a href="{% url 'mainapp:requested-parts' %}" class="btn btn-primary">View All</a>
+				</div>
+			</div>
+		</div>
+
+
+{% endblock%}

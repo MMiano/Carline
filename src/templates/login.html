@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% block topbanner %}
+{% endblock %}
+
+<div class="container">
+    <div class="row" style="padding-top:50px;padding-bottom:50px;">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="well login-well">
+            <center>
+            <div class="login-icon">
+
+                
+                    <i class="fa fa-user fa-5x" style="color:#318f61;"></i>
+                
+            </div>
+            </center>
+            <h1 class="sign-in-title">Sign In</h1>
+            <form action="" method="POST" style="padding-bottom:20px;" class="login-form">
+                {% csrf_token %} 
+                    {{form | crispy}}
+                <center>
+                    <input type="submit" class="btn btn-primary sign-in-button" value="Sign In" name="submit">
+                </center>
+            </form>
+            
+            <a href="{% url 'mainapp:verify' %}" class="pull-right verify-acc"> Verify Account >> </a>
+
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+		<div class="container">
+			<div class="row">
+				<h1 class="footer-topic" style="color:black !important;">MY REQUESTS</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<td>
+								Owner Email
+							</td>
+
+							<td>
+								Owner Username
+							</td>
+
+							<td>
+								Product
+							</td>
+
+						</tr>
+						
+					</thead>
+					<tbody>
+					{% for r in requested %}
+						<tr>
+							<td>{{r.product.owner.email}}</td>
+							<td>{{r.product.owner.username}}</td>
+							<td>{{r.product.title}}</td>
+							
+						</tr>
+					{% endfor %}
+						
+					</tbody>
+						
+					</table>
+
+			</div>
+		</div>
+{% endblock%}

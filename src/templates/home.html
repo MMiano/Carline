@@ -1,0 +1,122 @@
+ {% extends "base.html" %} {% load staticfiles %} {% block content %}
+
+
+
+
+
+<div class="container">
+
+
+
+
+<div class="row" style="padding-top:20px;">
+    <div class="col-xs-12">
+            <form method="GET" action="">
+                <div class="col-sm-3 pull-right">
+                    <div class="input-group">
+                        <input class="form-control search-textbox" type="text" name="q" placeholder="Search Spare Parts" value="{{request.GET.q}}">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default search-button" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                    <small class="search-exp">Search by Spare Part or Owner Info</small>
+                </div>
+            </form>
+    </div>
+</div>
+
+
+    <h3 class="latest" style="padding-top:10px;">All Spare Parts</h3> 
+    {% for p in products %}
+    <div class="col-sm-3">
+        <div class="product-card">
+            <div style="height:180px;width:auto;">
+                {% if p.image1 %}
+                <img src="{{p.image1.url}}" alt="" class="img-responsive img-home">
+                {% elif p.videofile %}
+                <video width='253' height='180' controls>
+                    <source src='{{p.videofile.url}}' type='video/mp4'>
+                        Your browser does not support the video tag.
+                </video>
+
+                {% endif %}
+            </div>
+           <div class="product-info">
+              <h2 class="product-title">{{p.title}}</h2>
+            
+            <h6 class="product-description">{{p.description | truncatechars_html:60}}</h6>
+            <h6 class="product-owner">{{p.owner.email}}</h6>
+            <h6 class="product-owner">{{p.owner.username}}</h6>
+            
+        
+       
+           </div>
+               {% if request.user.is_authenticated %}
+          
+          <div class="product-status">
+              
+              {% if p.owner.id == request.user.id %}
+                
+                <h4 class="footer-topic" style="padding-left:20px;">Owned</h4>
+              {% else %}
+
+               <button class="req btn btn-success {% if not p.is_available %} requested {% endif %}" data-id="{{p.id}}">
+                {% if not p.is_available %}
+                    Requested
+
+
+                    {% for t in transactions %}
+                      {% if t.recepient.id == request.user.id and t.product.id == p.id  %}/ Withdraw
+                      {% endif %}
+                  {% endfor %}
+
+                {% else %}
+                  Request
+                {% endif %}
+            </button>
+
+
+              {% endif %}
+
+           
+          </div>
+        
+        {% endif %}
+         
+            
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+      
+<br> 
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+        <center>
+            {% if products.has_other_pages %}
+            <ul class="pagination">
+                {% if products.has_previous %}
+                <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+                {% endif %} {% for p in products.paginator.page_range %} {% if products.number == p %}
+                <li class="active"><span>{{ p }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li><a href="?page={{ p }}">{{ p }}</a></li>
+                {% endif %} {% endfor %} {% if products.has_next %}
+                <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </center>
+    </div>
+</div>
+</div>
+{% endblock %}

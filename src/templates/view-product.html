@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+		
+
+		<div class="container" style="padding-top:30px;">
+			<div class="row">
+				<div class="col-sm-6">
+					 <form action="" , method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+					
+					
+					{{form | crispy}}
+
+					<input type="submit" class="btn btn-primary" name="submit" value="Save">
+                </form>
+				</div>
+
+				<div class="col-sm-6">
+				
+					
+					{% if request.path != "/add_product/" %}
+					<h1>Requested By</h1>
+						Username: {{requested_by.recepient.username}}
+						<br>
+						Email: {{requested_by.recepient.email}}
+						<hr>
+						<a href="{{product.get_absolute_url_delete}}" class="btn btn-danger">Delete Product</a>
+
+					{% endif %}
+
+					
+					
+					
+				</div>
+			</div>
+		</div>
+
+
+{% endblock%}
